@@ -1,25 +1,16 @@
 from django.core.management.base import BaseCommand
-from django.conf import settings
-
-import pymongo
+from octofit_tracker.models import User, Team, Activity, Leaderboard, Workout
 
 class Command(BaseCommand):
-    help = 'Populate the octofit_db database with test data'
+    help = 'Populate the octofit_db database with test data using Django ORM'
 
     def handle(self, *args, **options):
-        # Connect to MongoDB using pymongo for index creation
-        client = pymongo.MongoClient('mongodb://localhost:27017')
-        db = client['octofit_db']
-
-        # Drop collections if they exist
-        db.users.drop()
-        db.teams.drop()
-        db.activities.drop()
-        db.leaderboard.drop()
-        db.workouts.drop()
-
-        # Create unique index on email for users
-        db.users.create_index([('email', 1)], unique=True)
+        # Clear existing data
+        User.objects.all().delete()
+        Team.objects.all().delete()
+        Activity.objects.all().delete()
+        Leaderboard.objects.all().delete()
+        Workout.objects.all().delete()
 
         # Sample data
         users = [
@@ -47,10 +38,20 @@ class Command(BaseCommand):
             {"name": "Cardio Blast", "description": "High intensity cardio"},
         ]
 
-        db.users.insert_many(users)
-        db.teams.insert_many(teams)
-        db.activities.insert_many(activities)
-        db.leaderboard.insert_many(leaderboard)
-        db.workouts.insert_many(workouts)
+        for user in users:
+            user.pop('id', None)
+            User(**user).save()
+        for team in teams:
+            team.pop('id', None)
+            Team(**team).save()
+        for activity in activities:
+            activity.pop('id', None)
+            Activity(**activity).save()
+        for entry in leaderboard:
+            entry.pop('id', None)
+            Leaderboard(**entry).save()
+        for workout in workouts:
+            workout.pop('id', None)
+            Workout(**workout).save()
 
-        self.stdout.write(self.style.SUCCESS('octofit_db database populated with test data.'))
+        self.stdout.write(self.style.SUCCESS('octofit_db database populated with test data using Django ORM.'))
