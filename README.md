@@ -1,3 +1,24 @@
+# OctoFit Tracker
+
+OctoFit Tracker is a fitness tracking web application built for Mergington High School. It helps students stay active outside of PE class through friendly competition, activity logging, and team challenges.
+
+## Main Functionality
+
+- **User Profiles** – Students manage and maintain personal fitness profiles.
+- **Activity Logging & Tracking** – Log workouts such as running, walking, and strength training to track progress over time.
+- **Team Creation & Management** – Form teams and participate in group fitness challenges.
+- **Competitive Leaderboard** – View rankings to encourage friendly competition and motivate consistent activity.
+- **Workout Library** – Browse general workout ideas and exercise options for different activity types.
+
+## Technology Stack
+
+- **Frontend**: React.js
+- **Backend**: Python with Django REST Framework
+- **Database**: MongoDB
+- **Development Environment**: GitHub Codespaces
+
+---
+
 <div align="center">
 
 # 🎉 Congratulations geethu-g! 🎉
