@@ -14,9 +14,9 @@ test('renders welcome message on home page', () => {
 
 test('renders navigation links', () => {
   render(<App />);
-  expect(screen.getByText(/Activities/i)).toBeInTheDocument();
-  expect(screen.getByText(/Leaderboard/i)).toBeInTheDocument();
-  expect(screen.getByText(/Teams/i)).toBeInTheDocument();
-  expect(screen.getByText(/Users/i)).toBeInTheDocument();
-  expect(screen.getByText(/Workouts/i)).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^Activities$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^Leaderboard$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^Teams$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^Users$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /^Workouts$/i })).toBeInTheDocument();
 });

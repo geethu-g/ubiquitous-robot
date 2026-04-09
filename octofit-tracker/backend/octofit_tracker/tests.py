@@ -6,11 +6,13 @@ from .models import User, Team, Activity, Leaderboard, Workout
 
 class UserModelTest(TransactionTestCase):
     def test_create_user(self):
-        user = User.objects.create(name='Test', email='test@example.com', team='Marvel')
+        user = User.objects.create(
+            name='Test', email='test@example.com', team='Marvel')
         self.assertEqual(user.email, 'test@example.com')
 
     def test_user_str(self):
-        user = User.objects.create(name='Alice', email='alice@example.com', team='DC')
+        user = User.objects.create(
+            name='Alice', email='alice@example.com', team='DC')
         self.assertEqual(str(user), 'Alice')
 
 
@@ -26,11 +28,13 @@ class TeamModelTest(TransactionTestCase):
 
 class ActivityModelTest(TransactionTestCase):
     def test_create_activity(self):
-        activity = Activity.objects.create(user='test@example.com', activity='Run', duration=30)
+        activity = Activity.objects.create(
+            user='test@example.com', activity='Run', duration=30)
         self.assertEqual(activity.activity, 'Run')
 
     def test_activity_str(self):
-        activity = Activity.objects.create(user='bob@example.com', activity='Swim', duration=45)
+        activity = Activity.objects.create(
+            user='bob@example.com', activity='Swim', duration=45)
         self.assertIn('bob@example.com', str(activity))
 
 
@@ -50,7 +54,8 @@ class WorkoutModelTest(TransactionTestCase):
         self.assertEqual(workout.name, 'Yoga')
 
     def test_workout_str(self):
-        workout = Workout.objects.create(name='HIIT', description='High intensity')
+        workout = Workout.objects.create(
+            name='HIIT', description='High intensity')
         self.assertEqual(str(workout), 'HIIT')
 
 
@@ -60,7 +65,8 @@ class UserAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_user(self):
-        data = {'name': 'API User', 'email': 'apiuser@example.com', 'team': 'Avengers'}
+        data = {'name': 'API User', 'email': 'apiuser@example.com',
+                'team': 'Avengers'}
         response = self.client.post('/api/users/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['email'], 'apiuser@example.com')
@@ -84,7 +90,8 @@ class ActivityAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_activity(self):
-        data = {'user': 'runner@example.com', 'activity': 'Run', 'duration': 30}
+        data = {'user': 'runner@example.com', 'activity': 'Run',
+                'duration': 30}
         response = self.client.post('/api/activities/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['activity'], 'Run')
