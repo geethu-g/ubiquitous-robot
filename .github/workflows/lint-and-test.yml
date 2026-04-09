@@ -5,10 +5,15 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   backend-lint:
     name: Backend Lint (flake8)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,6 +34,8 @@ jobs:
   backend-test:
     name: Backend Tests (coverage)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     services:
       mongodb:
         image: mongo:6.0
@@ -57,6 +64,8 @@ jobs:
   frontend-lint:
     name: Frontend Lint (ESLint)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,6 +84,8 @@ jobs:
   frontend-test:
     name: Frontend Tests (coverage)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
