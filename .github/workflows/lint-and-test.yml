@@ -1,0 +1,104 @@
+name: Lint and Test
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  backend-lint:
+    name: Backend Lint (flake8)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r octofit-tracker/backend/requirements.txt
+
+      - name: Run flake8
+        run: flake8 octofit-tracker/backend/octofit_tracker/
+
+  backend-test:
+    name: Backend Tests (coverage)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r octofit-tracker/backend/requirements.txt
+
+      - name: Run tests with coverage
+        working-directory: octofit-tracker/backend
+        run: |
+          coverage run --source=octofit_tracker manage.py test octofit_tracker
+          coverage report --fail-under=50
+
+  frontend-lint:
+    name: Frontend Lint (ESLint)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --prefix octofit-tracker/frontend
+
+      - name: Run ESLint
+        run: npm run lint --prefix octofit-tracker/frontend
+
+  frontend-test:
+    name: Frontend Tests (coverage)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --prefix octofit-tracker/frontend
+
+      - name: Run tests with coverage
+        run: npm run test:coverage --prefix octofit-tracker/frontend
+        env:
+          CI: true
